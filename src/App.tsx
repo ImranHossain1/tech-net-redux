@@ -1,9 +1,13 @@
+import { Toaster } from './components/ui/Toaster';
+import MainLayout from './layouts/MainLayout';
 
 function App() {
-
   return (
-    <h1>Tech net</h1>
-  )
+    <div>
+      <Toaster />
+      <MainLayout />
+    </div>
+  );
 }
 
-export default App
+export default App;
