@@ -3,19 +3,26 @@ import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/components/ui/use-toast';
-import { useGetProductsQuery } from '@/redux/api/apiSlice';
+import { useGetProductsQuery } from '@/redux/features/products/productApi';
+
 import {
   setPriceRange,
   toggleState,
 } from '@/redux/features/products/productSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { IProduct } from '@/types/globalTypes';
+import { useEffect, useState } from 'react';
 
 export default function Products() {
   const { data, isLoading, error } = useGetProductsQuery(undefined);
+
   const { toast } = useToast();
-  const { status, priceRange } = useAppSelector((state) => state.product);
+
+  const { priceRange, status } = useAppSelector(
+    (state: { product: any }) => state.product
+  );
   const dispatch = useAppDispatch();
+
   const handleSlider = (value: number[]) => {
     dispatch(setPriceRange(value[0]));
   };
@@ -32,7 +39,7 @@ export default function Products() {
       (item: { price: number }) => item.price < priceRange
     );
   } else {
-    productsData = data;
+    productsData = data?.data;
   }
 
   return (
@@ -41,8 +48,8 @@ export default function Products() {
         <div>
           <h1 className="text-2xl uppercase">Availability</h1>
           <div
-            className="flex items-center space-x-2 mt-3"
             onClick={() => dispatch(toggleState())}
+            className="flex items-center space-x-2 mt-3"
           >
             <Switch id="in-stock" />
             <Label htmlFor="in-stock">In stock</Label>
@@ -56,7 +63,7 @@ export default function Products() {
               max={150}
               min={0}
               step={1}
-              onValueChange={(value) => handleSlider(value)}
+              onValueChange={(value: number[]) => handleSlider(value)}
             />
           </div>
           <div>From 0$ To {priceRange}$</div>

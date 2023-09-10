@@ -24,7 +24,6 @@ export default function Cart() {
   const { products, total } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
-
   return (
     <Sheet>
       <SheetTrigger>
@@ -62,9 +61,9 @@ export default function Cart() {
                   <HiMinus size="20" />
                 </Button>
                 <Button
+                  onClick={() => dispatch(removeFromCart(product))}
                   variant="destructive"
                   className="bg-red-500 hover:bg-red-400"
-                  onClick={() => dispatch(removeFromCart(product))}
                 >
                   <HiOutlineTrash size="20" />
                 </Button>
